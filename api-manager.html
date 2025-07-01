@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>API Manager - Bluestock</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .main-content {
+      padding: 30px;
+    }
+
+    .ipo-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    }
+
+    .ipo-table th, .ipo-table td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+    }
+
+    .ipo-table th {
+      background-color: #f8f9fa;
+    }
+
+    .ipo-table td img {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+      border-radius: 4px;
+    }
+
+    .action-btn {
+      margin-right: 6px;
+      padding: 6px 10px;
+      font-size: 13px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .view-btn { background-color: #17a2b8; color: white; }
+    .edit-btn { background-color: #ffc107; color: black; }
+    .delete-btn { background-color: #dc3545; color: white; }
+
+    .edit-form {
+      margin-top: 20px;
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 10px;
+      display: none;
+    }
+
+    .edit-form input, .edit-form select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .edit-form button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="Logo with round.png" alt="Bluestock Logo" />
+        <h2>Bluestock</h2>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Dashboard</a></li>
+          <li><a href="register.html">Register IPO</a></li>
+          <li><a href="manage-ipo.html">Manage IPO</a></li>
+          <li><a href="ipo-subscription.html">IPO Subscription</a></li>
+          <li><a href="ipo-allotment.html">IPO Allotment</a></li>
+          <li class="section-title">Others</li>
+          <li><a href="settings.html">Settings</a></li>
+          <li><a class="active" href="api-manager.html">API Manager</a></li>
+          <li><a href="accounts.html">Accounts</a></li>
+          <li><a href="help.html">Help</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <h1>IPO API Manager</h1>
+      <table class="ipo-table" id="ipoTable">
+        <thead>
+          <tr>
+            <th>Logo</th>
+            <th>Company</th>
+            <th>Status</th>
+            <th>Dates</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <!-- Edit IPO Form -->
+      <div class="edit-form" id="editForm">
+        <h3>Edit IPO</h3>
+        <form id="updateIpoForm">
+          <input type="hidden" id="editIndex" />
+          <input type="text" id="editCompany" placeholder="Company Name" required />
+          <input type="text" id="editPrice" placeholder="Price Band" required />
+          <input type="date" id="editOpen" required />
+          <input type="date" id="editClose" required />
+          <input type="text" id="editSize" placeholder="Issue Size" required />
+          <input type="text" id="editType" placeholder="Issue Type" required />
+          <input type="date" id="editListing" required />
+          <select id="editStatus" required>
+            <option value="">Select Status</option>
+            <option>Ongoing</option>
+            <option>Coming</option>
+            <option>New Listed</option>
+          </select>
+          <input type="text" id="editLogo" placeholder="logo filename (e.g. abc.png)" required />
+          <button type="submit">Update IPO</button>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const ipoData = JSON.parse(localStorage.getItem("ipoData") || "[]");
+    const tbody = document.querySelector("#ipoTable tbody");
+    const editForm = document.getElementById("editForm");
+
+    function renderIPOs() {
+      tbody.innerHTML = "";
+      ipoData.forEach((ipo, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td><img src="${ipo.logo}" alt="Logo" /></td>
+          <td>${ipo.company}</td>
+          <td>${ipo.status}</td>
+          <td>${ipo.open_date} → ${ipo.close_date}</td>
+          <td>
+            <button class="action-btn view-btn" onclick="alert(JSON.stringify(ipoData[${index}], null, 2))">View</button>
+            <button class="action-btn edit-btn" onclick="editIPO(${index})">Edit</button>
+            <button class="action-btn delete-btn" onclick="deleteIPO(${index})">Delete</button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function deleteIPO(index) {
+      if (confirm("Are you sure you want to delete this IPO?")) {
+        ipoData.splice(index, 1);
+        localStorage.setItem("ipoData", JSON.stringify(ipoData));
+        renderIPOs();
+      }
+    }
+
+    function editIPO(index) {
+      const ipo = ipoData[index];
+      document.getElementById("editIndex").value = index;
+      document.getElementById("editCompany").value = ipo.company;
+      document.getElementById("editPrice").value = ipo.price_band;
+      document.getElementById("editOpen").value = ipo.open_date;
+      document.getElementById("editClose").value = ipo.close_date;
+      document.getElementById("editSize").value = ipo.issue_size;
+      document.getElementById("editType").value = ipo.issue_type;
+      document.getElementById("editListing").value = ipo.listing_date;
+      document.getElementById("editStatus").value = ipo.status;
+      document.getElementById("editLogo").value = ipo.logo.replace("assets/", "");
+      editForm.style.display = "block";
+    }
+
+    document.getElementById("updateIpoForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const index = parseInt(document.getElementById("editIndex").value);
+      ipoData[index] = {
+        company: document.getElementById("editCompany").value,
+        price_band: document.getElementById("editPrice").value,
+        open_date: document.getElementById("editOpen").value,
+        close_date: document.getElementById("editClose").value,
+        issue_size: document.getElementById("editSize").value,
+        issue_type: document.getElementById("editType").value,
+        listing_date: document.getElementById("editListing").value,
+        status: document.getElementById("editStatus").value,
+        logo: "assets/" + document.getElementById("editLogo").value,
+      };
+
+      localStorage.setItem("ipoData", JSON.stringify(ipoData));
+      editForm.style.display = "none";
+      renderIPOs();
+      alert("IPO updated successfully!");
+    });
+
+    renderIPOs();
+  </script>
+</body>
+</html>

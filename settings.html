@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Settings - Bluestock</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .main-content {
+      padding: 30px;
+    }
+
+    .settings-section {
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .settings-section h2 {
+      font-size: 22px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .settings-section label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    .settings-section input, .settings-section select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    .settings-section button {
+      background-color: #007bff;
+      color: #fff;
+      padding: 12px 18px;
+      border: none;
+      font-size: 15px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .settings-section button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="Logo with round.png" alt="Bluestock Logo" />
+        <h2>Bluestock</h2>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Dashboard</a></li>
+          <li><a href="register.html">Register IPO</a></li>
+          <li><a href="manage-ipo.html">Manage IPO</a></li>
+          <li><a href="ipo-subscription.html">IPO Subscription</a></li>
+          <li><a href="ipo-allotment.html">IPO Allotment</a></li>
+          <li class="section-title">Others</li>
+          <li><a class="active" href="settings.html">Settings</a></li>
+          <li><a href="api-manager.html">API Manager</a></li>
+          <li><a href="accounts.html">Accounts</a></li>
+          <li><a href="help.html">Help</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="settings-section">
+        <h2>Profile Settings</h2>
+        <form id="settingsForm">
+          <label for="username">Full Name</label>
+          <input type="text" id="username" placeholder="Your Name" required />
+
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="your@email.com" required />
+
+          <label for="password">Change Password</label>
+          <input type="password" id="password" placeholder="New Password" />
+
+          <label for="theme">Theme</label>
+          <select id="theme">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+
+          <button type="submit">Save Settings</button>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const form = document.getElementById("settingsForm");
+
+    // Load saved settings
+    window.onload = () => {
+      const settings = JSON.parse(localStorage.getItem("userSettings") || "{}");
+      if (settings.name) document.getElementById("username").value = settings.name;
+      if (settings.email) document.getElementById("email").value = settings.email;
+      if (settings.theme) document.getElementById("theme").value = settings.theme;
+    };
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const settings = {
+        name: document.getElementById("username").value,
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value,
+        theme: document.getElementById("theme").value
+      };
+      localStorage.setItem("userSettings", JSON.stringify(settings));
+      alert("Settings saved successfully!");
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Register IPO</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar Menu -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="Logo with round.png" alt="Bluestock Logo" />
+        <h2>Bluestock</h2>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Dashboard</a></li>
+          <li><a href="manage-ipo.html">Manage IPO</a></li>
+          <li><a href="ipo-subscription.html">IPO Subscription</a></li>
+          <li><a href="ipo-allotment.html">IPO Allotment</a></li>
+          <li class="section-title">Others</li>
+          <li><a href="settings.html">Settings</a></li>
+          <li><a href="api-manager.html">API Manager</a></li>
+          <li><a href="accounts.html">Accounts</a></li>
+          <li><a href="help.html">Help</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Form Area -->
+    <main class="main-content">
+      <h1>Register New IPO</h1>
+      <form id="ipoForm">
+        <input type="text" placeholder="Company Name" id="company" required />
+        <input type="text" placeholder="Price Band" id="price" required />
+        <input type="date" placeholder="Open Date" id="open" required />
+        <input type="date" placeholder="Close Date" id="close" required />
+        <input type="text" placeholder="Issue Size" id="size" required />
+        <input type="text" placeholder="Issue Type" id="type" required />
+        <input type="date" placeholder="Listing Date" id="listing" required />
+        <select id="status" required>
+          <option value="">Select Status</option>
+          <option>Ongoing</option>
+          <option>Coming</option>
+          <option>New Listed</option>
+        </select>
+
+        <!-- ✅ Logo Input -->
+        <input type="text" placeholder="Enter Logo File Name (e.g. tata.png)" id="logo" required />
+        <img id="logoPreview" src="Logo with round.png" alt="Logo Preview" class="preview-logo" />
+
+        <button type="submit">Register IPO</button>
+      </form>
+    </main>
+  </div>
+
+  <script>
+    // Live preview the logo
+    document.getElementById('logo').addEventListener('input', function () {
+      const filename = this.value.trim();
+      const preview = document.getElementById('logoPreview');
+
+      if (filename) {
+        preview.src = filename; // No assets/ prefix needed
+      } else {
+        preview.src = "Logo with round.png"; // Default logo
+      }
+    });
+
+    // Handle form submit
+    document.getElementById('ipoForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const ipo = {
+        company: document.getElementById('company').value,
+        price_band: document.getElementById('price').value,
+        open_date: document.getElementById('open').value,
+        close_date: document.getElementById('close').value,
+        issue_size: document.getElementById('size').value,
+        issue_type: document.getElementById('type').value,
+        listing_date: document.getElementById('listing').value,
+        status: document.getElementById('status').value,
+        logo: document.getElementById('logo').value.trim() // use as-is
+      };
+
+      const ipoData = JSON.parse(localStorage.getItem('ipoData') || "[]");
+      ipoData.push(ipo);
+      localStorage.setItem('ipoData', JSON.stringify(ipoData));
+
+      alert("IPO Registered!");
+      location.href = "index.html";
+    });
+  </script>
+</body>
+</html>

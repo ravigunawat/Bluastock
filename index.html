@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bluestock IPO Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Optional inline styling if not using style.css */
+    .main-content {
+      padding: 20px;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .page-header h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .register-btn {
+      background-color: #1010ec;
+      color: #ffffff;
+      text-decoration: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+    }
+
+    .register-btn:hover {
+      background-color: #218838;
+    }
+
+    .ipo-card {
+      background: #fff;
+      border: 1px solid #d00606;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .ipo-card img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      border-radius: 50%;
+      border: 1px solid #ccc;
+      background: #f9f9f9;
+    }
+
+    .ipo-card h3 {
+      margin: 0;
+    }
+
+    .ipo-card small {
+      display: block;
+      color: gray;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="Logo with round.png" alt="Bluestock Logo" />
+        <h2>Bluestock</h2>
+      </div>
+      <nav>
+        <ul>
+          <li><a class="active" href="index.html">Dashboard</a></li>
+          <li><a href="register.html">Register IPO</a></li>
+          <li><a href="manage-ipo.html">Manage IPO</a></li>
+          <li><a href="ipo-subscription.html">IPO Subscription</a></li>
+          <li><a href="ipo-allotment.html">IPO Allotment</a></li>
+          <li class="section-title">Others</li>
+          <li><a href="settings.html">Settings</a></li>
+          <li><a href="api-manager.html">API Manager</a></li>
+          <li><a href="accounts.html">Accounts</a></li>
+          <li><a href="help.html">Help</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="page-header">
+        <h1>Upcoming IPOs</h1>
+        <a href="register.html" class="register-btn">+ Register IPO</a>
+      </header>
+
+      <div id="ipoList">
+        <!-- IPO cards will appear here -->
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const ipoList = JSON.parse(localStorage.getItem('ipoData') || '[]');
+    const container = document.getElementById('ipoList');
+
+    if (ipoList.length === 0) {
+      container.innerHTML = "<p>No IPOs found. Please register one.</p>";
+    } else {
+      ipoList.forEach(ipo => {
+        const div = document.createElement('div');
+        div.className = 'ipo-card';
+        div.innerHTML = `
+          <img src="${ipo.logo}" alt="${ipo.company} Logo" />
+          <div>
+            <h3>${ipo.company}</h3>
+            <small>Open: ${ipo.open_date} | Close: ${ipo.close_date}</small>
+            <small>Price Band: ${ipo.price_band} | Status: ${ipo.status}</small>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>

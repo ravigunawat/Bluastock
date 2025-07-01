@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Payment - IPO Subscription</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .payment-container {
+      max-width: 500px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    }
+
+    .payment-container h2 {
+      margin-top: 0;
+      font-size: 24px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .plan-summary {
+      background: #f0f4ff;
+      padding: 15px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+
+    .payment-methods label {
+      display: block;
+      margin: 15px 0 8px;
+      font-weight: bold;
+    }
+
+    .payment-methods input[type="text"],
+    .payment-methods select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .pay-btn {
+      margin-top: 20px;
+      width: 100%;
+      background-color: #4b4bff;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .pay-btn:hover {
+      background-color: #3737cc;
+    }
+  </style>
+</head>
+<body>
+  <div class="payment-container">
+    <h2>Complete Your Payment</h2>
+    <div class="plan-summary" id="planDetails">Loading...</div>
+
+    <form id="paymentForm" class="payment-methods">
+      <label for="method">Select Payment Method:</label>
+      <select id="method" required>
+        <option value="">Choose</option>
+        <option value="UPI">UPI (PhonePe, GPay, Paytm)</option>
+        <option value="NetBanking">Net Banking</option>
+        <option value="Card">Debit/Credit Card</option>
+      </select>
+
+      <label for="details">Enter Payment Details:</label>
+      <input type="text" id="details" placeholder="Enter UPI ID / Card No / Netbanking ID" required />
+
+      <button type="submit" class="pay-btn">Pay Now</button>
+    </form>
+  </div>
+
+  <script>
+    // Load plan details from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const plan = urlParams.get('plan');
+    const price = urlParams.get('price');
+
+    if (plan && price) {
+      document.getElementById('planDetails').textContent = `${plan} Plan - ₹${price}`;
+    }
+
+    document.getElementById('paymentForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const method = document.getElementById('method').value;
+      const details = document.getElementById('details').value;
+
+      if (method && details) {
+        alert(`Payment of ₹${price} for ${plan} completed via ${method}`);
+        window.location.href = "index.html";
+      } else {
+        alert("Please complete all fields.");
+      }
+    });
+  </script>
+</body>
+</html>

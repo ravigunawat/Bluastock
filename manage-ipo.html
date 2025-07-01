@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Manage IPO</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="Logo with round.png" alt="Bluestock Logo" />
+        <h2>Bluestock</h2>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Dashboard</a></li>
+          <li><a href="manage-ipo.html">Manage IPO</a></li>
+          <li><a href="ipo-subscription.html">IPO Subscription</a></li>
+          <li><a href="ipo-allotment.html">IPO Allotment</a></li>
+          <li class="section-title">Others</li>
+          <li><a href="settings.html">Settings</a></li>
+          <li><a href="api-manager.html">API Manager</a></li>
+          <li><a href="accounts.html">Accounts</a></li>
+          <li><a href="help.html">Help</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <h1>Manage IPOs</h1>
+      <div id="ipoList"></div>
+    </main>
+  </div>
+
+  <!-- Hidden Edit Form Modal -->
+  <div id="editModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <h3>Edit IPO</h3>
+      <form id="editForm">
+        <input type="text" id="editCompany" required />
+        <input type="text" id="editPrice" required />
+        <input type="date" id="editOpen" required />
+        <input type="date" id="editClose" required />
+        <input type="text" id="editSize" required />
+        <input type="text" id="editType" required />
+        <input type="date" id="editListing" required />
+        <select id="editStatus" required>
+          <option value="">Select Status</option>
+          <option>Ongoing</option>
+          <option>Coming</option>
+          <option>New Listed</option>
+        </select>
+        <input type="text" id="editLogo" required />
+        <button type="submit">Save</button>
+        <button type="button" onclick="closeModal()">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let currentEditIndex = null;
+
+    function loadIPOs() {
+      const ipoData = JSON.parse(localStorage.getItem('ipoData') || "[]");
+      const container = document.getElementById("ipoList");
+      container.innerHTML = "";
+
+      ipoData.forEach((ipo, index) => {
+        const div = document.createElement("div");
+        div.className = "ipo-card";
+        div.innerHTML = `
+          <img src="${ipo.logo}" alt="Logo" class="preview-logo" />
+          <h3>${ipo.company}</h3>
+          <p>Price Band: ${ipo.price_band}</p>
+          <p>Open: ${ipo.open_date}</p>
+          <p>Close: ${ipo.close_date}</p>
+          <p>Issue Size: ${ipo.issue_size}</p>
+          <p>Type: ${ipo.issue_type}</p>
+          <p>Listing: ${ipo.listing_date}</p>
+          <p>Status: ${ipo.status}</p>
+          <button onclick="editIPO(${index})">Edit</button>
+          <button onclick="deleteIPO(${index})">Delete</button>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function editIPO(index) {
+      const ipoData = JSON.parse(localStorage.getItem('ipoData'));
+      const ipo = ipoData[index];
+      currentEditIndex = index;
+
+      document.getElementById('editCompany').value = ipo.company;
+      document.getElementById('editPrice').value = ipo.price_band;
+      document.getElementById('editOpen').value = ipo.open_date;
+      document.getElementById('editClose').value = ipo.close_date;
+      document.getElementById('editSize').value = ipo.issue_size;
+      document.getElementById('editType').value = ipo.issue_type;
+      document.getElementById('editListing').value = ipo.listing_date;
+      document.getElementById('editStatus').value = ipo.status;
+      document.getElementById('editLogo').value = ipo.logo;
+
+      document.getElementById('editModal').style.display = 'block';
+    }
+
+    function closeModal() {
+      document.getElementById('editModal').style.display = 'none';
+    }
+
+    document.getElementById('editForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const ipoData = JSON.parse(localStorage.getItem('ipoData'));
+
+      ipoData[currentEditIndex] = {
+        company: document.getElementById('editCompany').value,
+        price_band: document.getElementById('editPrice').value,
+        open_date: document.getElementById('editOpen').value,
+        close_date: document.getElementById('editClose').value,
+        issue_size: document.getElementById('editSize').value,
+        issue_type: document.getElementById('editType').value,
+        listing_date: document.getElementById('editListing').value,
+        status: document.getElementById('editStatus').value,
+        logo: document.getElementById('editLogo').value
+      };
+
+      localStorage.setItem('ipoData', JSON.stringify(ipoData));
+      closeModal();
+      loadIPOs();
+    });
+
+    function deleteIPO(index) {
+      const ipoData = JSON.parse(localStorage.getItem('ipoData'));
+      if (confirm("Are you sure you want to delete this IPO?")) {
+        ipoData.splice(index, 1);
+        localStorage.setItem('ipoData', JSON.stringify(ipoData));
+        loadIPOs();
+      }
+    }
+
+    // On page load
+    loadIPOs();
+  </script>
+</body>
+</html>

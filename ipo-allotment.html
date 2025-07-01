@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>IPO Allotment</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .main-content {
+      padding: 20px;
+    }
+
+    .allotment-form, .search-form {
+      max-width: 600px;
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.08);
+      margin-bottom: 30px;
+    }
+
+    .allotment-form h2, .search-form h2 {
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+
+    .allotment-form input, .allotment-form select,
+    .search-form input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    .submit-btn, .delete-btn {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 16px;
+      border: none;
+      font-size: 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    .submit-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .delete-btn {
+      background-color: #dc3545;
+    }
+
+    .delete-btn:hover {
+      background-color: #c82333;
+    }
+
+    .allotment-info {
+      background: #f8f8f8;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+
+    .allotment-info p {
+      margin: 8px 0;
+    }
+
+    .sidebar .active {
+      font-weight: bold;
+      color: #007bff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="Logo with round.png" alt="Bluestock Logo" />
+        <h2>Bluestock</h2>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Dashboard</a></li>
+          <li><a href="register.html">Register IPO</a></li>
+          <li><a href="manage-ipo.html">Manage IPO</a></li>
+          <li><a href="ipo-subscription.html">IPO Subscription</a></li>
+          <li><a class="active" href="ipo-allotment.html">IPO Allotment</a></li>
+          <li class="section-title">Others</li>
+          <li><a href="settings.html">Settings</a></li>
+          <li><a href="api-manager.html">API Manager</a></li>
+          <li><a href="accounts.html">Accounts</a></li>
+          <li><a href="help.html">Help</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <h1>IPO Allotment</h1>
+
+      <form class="allotment-form" id="allotmentForm">
+        <h2>Enter Allotment Details</h2>
+        <input type="text" id="allotmentNo" placeholder="Allotment Number (e.g. A1001)" required />
+        <select id="ipoName" required>
+          <option value="">Select IPO</option>
+        </select>
+        <input type="text" id="pan" placeholder="PAN Number" required />
+        <input type="text" id="name" placeholder="Full Name" required />
+        <input type="email" id="email" placeholder="Email Address" required />
+        <input type="tel" id="mobile" placeholder="Mobile Number" required />
+        <button type="submit" class="submit-btn">Save / Update Allotment</button>
+        <button type="button" class="delete-btn" onclick="deleteAllotment()">Delete</button>
+      </form>
+
+      <form class="search-form" onsubmit="searchAllotment(event)">
+        <h2>Search by Allotment Number</h2>
+        <input type="text" id="searchAllotmentNo" placeholder="Enter Allotment Number (e.g. A1001)" required />
+        <button type="submit" class="submit-btn">Search</button>
+      </form>
+
+      <div id="allotmentDetails" class="allotment-info" style="display:none;"></div>
+    </main>
+  </div>
+
+  <script>
+    // Load IPOs from localStorage
+    const ipoList = JSON.parse(localStorage.getItem('ipoData') || "[]");
+    const ipoSelect = document.getElementById('ipoName');
+    ipoList.forEach(ipo => {
+      const opt = document.createElement('option');
+      opt.value = ipo.company;
+      opt.textContent = ipo.company;
+      ipoSelect.appendChild(opt);
+    });
+
+    const form = document.getElementById('allotmentForm');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const allotment = {
+        allotmentNo: document.getElementById('allotmentNo').value.trim(),
+        ipo: document.getElementById('ipoName').value,
+        pan: document.getElementById('pan').value,
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        mobile: document.getElementById('mobile').value
+      };
+
+      let allotments = JSON.parse(localStorage.getItem('allotments') || "[]");
+
+      // Check if exists
+      const existingIndex = allotments.findIndex(a => a.allotmentNo === allotment.allotmentNo);
+      if (existingIndex !== -1) {
+        allotments[existingIndex] = allotment;
+        alert("Allotment Updated!");
+      } else {
+        allotments.push(allotment);
+        alert("Allotment Saved!");
+      }
+
+      localStorage.setItem('allotments', JSON.stringify(allotments));
+      form.reset();
+    });
+
+    function searchAllotment(e) {
+      e.preventDefault();
+      const number = document.getElementById('searchAllotmentNo').value.trim();
+      const allotments = JSON.parse(localStorage.getItem('allotments') || "[]");
+      const result = allotments.find(a => a.allotmentNo === number);
+
+      const detailsDiv = document.getElementById('allotmentDetails');
+      if (result) {
+        detailsDiv.style.display = "block";
+        detailsDiv.innerHTML = `
+          <p><strong>Allotment No:</strong> ${result.allotmentNo}</p>
+          <p><strong>IPO:</strong> ${result.ipo}</p>
+          <p><strong>Name:</strong> ${result.name}</p>
+          <p><strong>PAN:</strong> ${result.pan}</p>
+          <p><strong>Email:</strong> ${result.email}</p>
+          <p><strong>Mobile:</strong> ${result.mobile}</p>
+        `;
+        // Autofill form
+        document.getElementById('allotmentNo').value = result.allotmentNo;
+        document.getElementById('ipoName').value = result.ipo;
+        document.getElementById('pan').value = result.pan;
+        document.getElementById('name').value = result.name;
+        document.getElementById('email').value = result.email;
+        document.getElementById('mobile').value = result.mobile;
+      } else {
+        detailsDiv.style.display = "block";
+        detailsDiv.innerHTML = `<p style="color:red">No allotment found for number: ${number}</p>`;
+      }
+    }
+
+    function deleteAllotment() {
+      const number = document.getElementById('allotmentNo').value.trim();
+      if (!number) {
+        alert("Please enter Allotment Number to delete.");
+        return;
+      }
+
+      let allotments = JSON.parse(localStorage.getItem('allotments') || "[]");
+      const newList = allotments.filter(a => a.allotmentNo !== number);
+
+      if (newList.length === allotments.length) {
+        alert("No record found to delete.");
+      } else {
+        localStorage.setItem('allotments', JSON.stringify(newList));
+        alert("Allotment deleted.");
+        form.reset();
+        document.getElementById('allotmentDetails').style.display = "none";
+      }
+    }
+  </script>
+</body>
+</html>

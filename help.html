@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Help Center - Bluestock</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .main-content {
+      padding: 30px;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .help-container {
+      background-color: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      max-width: 700px;
+      margin: 0 auto;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .help-container h2 {
+      margin-top: 0;
+      font-size: 24px;
+      color: #333;
+    }
+
+    .help-container p {
+      color: #555;
+      margin-bottom: 15px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    input, textarea {
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      width: 100%;
+    }
+
+    .submit-btn {
+      background-color: #007bff;
+      color: white;
+      padding: 12px;
+      border: none;
+      font-size: 15px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .submit-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .contact-info {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .contact-info p {
+      margin: 5px 0;
+    }
+
+    .logo img {
+      width: 40px;
+    }
+
+    .sidebar .active {
+      font-weight: bold;
+      color: #007bff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="Logo with round.png" alt="Bluestock Logo" />
+        <h2>Bluestock</h2>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Dashboard</a></li>
+          <li><a href="register.html">Register IPO</a></li>
+          <li><a href="manage-ipo.html">Manage IPO</a></li>
+          <li><a href="ipo-subscription.html">IPO Subscription</a></li>
+          <li><a href="ipo-allotment.html">IPO Allotment</a></li>
+          <li class="section-title">Others</li>
+          <li><a href="settings.html">Settings</a></li>
+          <li><a href="api-manager.html">API Manager</a></li>
+          <li><a href="accounts.html">Accounts</a></li>
+          <li><a class="active" href="help.html">Help</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <h1>Help Center</h1>
+        <a href="register.html" class="submit-btn">+ Register IPO</a>
+      </div>
+
+      <div class="help-container">
+        <h2>Need Assistance?</h2>
+        <p>Use the form below to contact our support team. Your message will be opened in your default mail app.</p>
+
+        <form id="contactForm" onsubmit="return sendMail()">
+          <input type="text" id="name" placeholder="Your Name" required />
+          <input type="email" id="email" placeholder="Your Email" required />
+          <textarea id="message" placeholder="Write your message here..." rows="5" required></textarea>
+          <button type="submit" class="submit-btn">Send via Email</button>
+        </form>
+
+        <div class="contact-info">
+          <h3>Customer Service</h3>
+          <p><strong>Email:</strong> support@bluestock.com</p>
+          <p><strong>Phone:</strong> +91 98765 43210</p>
+          <p><strong>Support Hours:</strong> 9:00 AM - 6:00 PM (Mon–Fri)</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function sendMail() {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      const subject = encodeURIComponent(`Help Request from ${name}`);
+      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+      const mailtoLink = `mailto:support@bluestock.com?subject=${subject}&body=${body}`;
+
+      window.location.href = mailtoLink;
+      return false; // Prevent default form submission
+    }
+  </script>
+</body>
+</html>

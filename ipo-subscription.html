@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>IPO Subscription Plans</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .subscription-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .plan-card {
+      background: white;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .plan-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .plan-title {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .plan-type {
+      background: #4b4bff;
+      color: white;
+      font-size: 13px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    .super-prime {
+      background: #ff6347;
+    }
+
+    .price {
+      font-size: 20px;
+      color: #333;
+      font-weight: bold;
+      margin: 12px 0;
+    }
+
+    .subscribe-btn {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .subscribe-btn:hover {
+      background-color: #218838;
+    }
+
+    .plan-duration {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .plan-section-title {
+      margin: 30px 0 20px;
+      font-size: 20px;
+      color: #333;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="Logo with round.png" alt="Bluestock Logo" />
+        <h2>Bluestock</h2>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Dashboard</a></li>
+          <li><a href="register.html">Register IPO</a></li>
+          <li><a href="manage-ipo.html">Manage IPO</a></li>
+          <li><a href="ipo-subscription.html" class="active">IPO Subscription</a></li>
+          <li><a href="ipo-allotment.html">IPO Allotment</a></li>
+          <li class="section-title">Others</li>
+          <li><a href="settings.html">Settings</a></li>
+          <li><a href="api-manager.html">API Manager</a></li>
+          <li><a href="accounts.html">Accounts</a></li>
+          <li><a href="help.html">Help</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <h1>IPO Subscription Plans</h1>
+
+      <h2 class="plan-section-title">Prime Plans</h2>
+      <div class="subscription-container">
+        <div class="plan-card">
+          <div class="plan-type">Prime</div>
+          <div class="plan-title">1 Month Access</div>
+          <div class="price">₹299</div>
+          <p class="plan-duration">Access all prime IPO features for 30 days.</p>
+          <a href="payment.html?plan=Prime 1 Month&price=299" class="subscribe-btn">Subscribe</a>
+        </div>
+
+        <div class="plan-card">
+          <div class="plan-type">Prime</div>
+          <div class="plan-title">3 Months Access</div>
+          <div class="price">₹799</div>
+          <p class="plan-duration">Save more with a 3-month pack.</p>
+          <a href="payment.html?plan=Prime 3 Months&price=799" class="subscribe-btn">Subscribe</a>
+        </div>
+
+        <div class="plan-card">
+          <div class="plan-type">Prime</div>
+          <div class="plan-title">1 Year Access</div>
+          <div class="price">₹2499</div>
+          <p class="plan-duration">Full year of unlimited IPO updates.</p>
+          <a href="payment.html?plan=Prime 1 Year&price=2499" class="subscribe-btn">Subscribe</a>
+        </div>
+      </div>
+
+      <h2 class="plan-section-title">Super Prime Plans</h2>
+      <div class="subscription-container">
+        <div class="plan-card">
+          <div class="plan-type super-prime">Super Prime</div>
+          <div class="plan-title">1 Month Access</div>
+          <div class="price">₹499</div>
+          <p class="plan-duration">Priority data + RHP/DRHP access + early alerts.</p>
+          <a href="payment.html?plan=Super Prime 1 Month&price=499" class="subscribe-btn">Subscribe</a>
+        </div>
+
+        <div class="plan-card">
+          <div class="plan-type super-prime">Super Prime</div>
+          <div class="plan-title">3 Months Access</div>
+          <div class="price">₹1299</div>
+          <p class="plan-duration">Get detailed reports + exclusive insights.</p>
+          <a href="payment.html?plan=Super Prime 3 Months&price=1299" class="subscribe-btn">Subscribe</a>
+        </div>
+
+        <div class="plan-card">
+          <div class="plan-type super-prime">Super Prime</div>
+          <div class="plan-title">1 Year Access</div>
+          <div class="price">₹3999</div>
+          <p class="plan-duration">All features unlocked for 1 year.</p>
+          <a href="payment.html?plan=Super Prime 1 Year&price=3999" class="subscribe-btn">Subscribe</a>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
