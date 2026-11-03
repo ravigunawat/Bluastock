@@ -17,3 +17,4 @@ HTML, CSS, JavaScript, PHP, SQL
 - Normalized database schema for IPO data
 - Backend modules for subscription handling
 - Responsive frontend pages
+for pr test review
